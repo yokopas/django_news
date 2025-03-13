@@ -1,13 +1,64 @@
 <!-- templates/base.html -->
+ {% load static %}
  <html>
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Newspaper App{% endblock title %}</title>
+        <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+        <link rel="stylesheet" href="{% static "css/custom.css" %}">
     </head> 
     <body>
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="{% url "home" %}">Newspaper</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                  <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == "home" %}active{% endif %} " href="{% url "home" %}">Home
+                      <span class="visually-hidden">(current)</span>
+                    </a>
+                  </li>
+                  {% if user.is_authenticated %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">+ Add</a>
+                  </li>
+                </ul>
+                <div class="ms-auto">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Hi {{ user.username }}</a>
+                            <div class="dropdown-menu dropdown-menu-end" data-bs-theme="light">
+                            <a class="dropdown-item" href="#">Change Password</a>
+                            <div class="dropdown-divider"></div>
+                            <form method="post" action="{% url "logout" %}">
+                                {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                            </form>
+                            </div>
+                        </li>
+                        {% else %}
+                    </ul>
+                </div>
+                <div class="me-auto">
+                    <a href="{% url "login" %}" class="btn btn-primary">Log In</a>
+                    <a href="{% url "signup" %}" class="btn btn-secondary">Sign Up</a>
+                </div>  
+                  
+                  {% endif %}
+              </div>
+            </div>
+          </nav>
         <main>
-            {% block content %}
-            {% endblock content %}
+            <div class="container">
+                <br>
+                {% block content %}
+                {% endblock content %}
+            </div>
         </main>
+        <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
     </body>
  </html>

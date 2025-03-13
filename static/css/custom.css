@@ -1,0 +1,7 @@
+form .form-control {
+    max-width: 300px; /* Adjust as needed */
+    width: 100%;
+}
+.asteriskField {
+    display: none;
+}
